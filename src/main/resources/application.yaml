@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: pongoedu
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pongoedu
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: mySecretKeyForSigningJWTTokensThatIsAtLeast256BitsLongForHS256AlgorithmWithMoreCharacters
+  expiration: 86400000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+  api-docs:
+    path: /v3/api-docs
