@@ -1,9 +1,7 @@
 package com.pongo.pongoedu.infrastructure.config;
 
 import com.pongo.pongoedu.domain.entities.*;
-import com.pongo.pongoedu.domain.enums.Role;
-import com.pongo.pongoedu.domain.enums.StatusAtividade;
-import com.pongo.pongoedu.domain.enums.TipoMaterial;
+import com.pongo.pongoedu.domain.enums.*;
 import com.pongo.pongoedu.infrastructure.persistence.jpa.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +28,8 @@ public class DataSeeder implements CommandLineRunner {
     private final MaterialJpaRepository materialRepo;
     private final AtividadeJpaRepository atividadeRepo;
     private final PasswordEncoder passwordEncoder;
+    private final ReagenteJpaRepository reagenteJpaRepo;
+    private final ExperimentoJpaRepository experimentoJpaRepo;
 
     @Override
     public void run(String... args) {
@@ -139,6 +139,118 @@ public class DataSeeder implements CommandLineRunner {
         atv2.setXpRecompensa(300);
         atv2.setStatus(StatusAtividade.EM_PROGRESSO);
         atv2.setDataEntrega(LocalDate.now().plusDays(3));
+
+        // === Reagentes ===
+        var bicarbonato = new Reagente();
+        bicarbonato.setNome("Bicarbonato de Sódio");
+        bicarbonato.setFormula("NaHCO₃");
+        bicarbonato.setQuantidade(20);
+        bicarbonato.setQuantidadeMinima(5);
+        bicarbonato.setUnidade("g");
+        bicarbonato.setLocalizacao("Armário A, Prateleira 1");
+
+        var vinagre = new Reagente();
+        vinagre.setNome("Vinagre");
+        vinagre.setFormula("CH₃COOH");
+        vinagre.setQuantidade(15);
+        vinagre.setQuantidadeMinima(5);
+        vinagre.setUnidade("ml");
+        vinagre.setLocalizacao("Armário A, Prateleira 1");
+
+        var corante = new Reagente();
+        corante.setNome("Corante Alimentício");
+        corante.setQuantidade(10);
+        corante.setQuantidadeMinima(3);
+        corante.setUnidade("ml");
+        corante.setLocalizacao("Armário B, Prateleira 2");
+
+        var detergente = new Reagente();
+        detergente.setNome("Detergente");
+        detergente.setQuantidade(8);
+        detergente.setQuantidadeMinima(3);
+        detergente.setUnidade("ml");
+        detergente.setLocalizacao("Armário B, Prateleira 2");
+
+        var repolho = new Reagente();
+        repolho.setNome("Extrato de Repolho Roxo");
+        repolho.setQuantidade(0);
+        repolho.setQuantidadeMinima(5);
+        repolho.setUnidade("ml");
+        repolho.setLocalizacao("Geladeira");
+
+        var sulfatoCobre = new Reagente();
+        sulfatoCobre.setNome("Sulfato de Cobre");
+        sulfatoCobre.setFormula("CuSO₄");
+        sulfatoCobre.setQuantidade(12);
+        sulfatoCobre.setQuantidadeMinima(5);
+        sulfatoCobre.setUnidade("g");
+        sulfatoCobre.setLocalizacao("Armário C, Prateleira 1");
+
+        var ferro = new Reagente();
+        ferro.setNome("Prego de Ferro");
+        ferro.setQuantidade(30);
+        ferro.setQuantidadeMinima(10);
+        ferro.setUnidade("un");
+        ferro.setLocalizacao("Gaveta 3");
+
+        var fioCobre = new Reagente();
+        fioCobre.setNome("Fio de Cobre");
+        fioCobre.setQuantidade(0);
+        fioCobre.setQuantidadeMinima(5);
+        fioCobre.setUnidade("un");
+        fioCobre.setLocalizacao("Gaveta 3");
+
+        reagenteJpaRepo.saveAll(List.of(
+                bicarbonato, vinagre, corante, detergente,
+                repolho, sulfatoCobre, ferro, fioCobre
+        ));
+
+// === Experimentos ===
+        var vulcao = new Experimento();
+        vulcao.setNome("Vulcão de Bicarbonato");
+        vulcao.setDescricao("Simulação de erupção vulcânica usando reação ácido-base");
+        vulcao.setPassoAPasso("1. Monte um cone de argila\n2. Coloque bicarbonato dentro\n3. Adicione corante\n4. Despeje vinagre\n5. Observe a reação");
+        vulcao.setTempoEstimado(30);
+        vulcao.setSerie("6º ano");
+        vulcao.setDisciplina("Química");
+        vulcao.setNivelSeguranca(NivelSeguranca.BAIXO);
+        vulcao.setEfeito(EfeitoVisual.ESPUMA);
+        vulcao.setReagentes(List.of(bicarbonato, vinagre, corante));
+
+        var indicador = new Experimento();
+        indicador.setNome("Indicador de pH com Repolho Roxo");
+        indicador.setDescricao("Usar extrato de repolho roxo como indicador natural de pH");
+        indicador.setPassoAPasso("1. Ferva o repolho roxo\n2. Coe o extrato\n3. Separe em copos\n4. Adicione substâncias (vinagre, sabão, limão)\n5. Observe a mudança de cor");
+        indicador.setTempoEstimado(45);
+        indicador.setSerie("8º ano");
+        indicador.setDisciplina("Química");
+        indicador.setNivelSeguranca(NivelSeguranca.BAIXO);
+        indicador.setEfeito(EfeitoVisual.COR);
+        indicador.setReagentes(List.of(repolho, vinagre));
+
+        var testeChama = new Experimento();
+        testeChama.setNome("Teste de Chama");
+        testeChama.setDescricao("Identificar metais pela cor da chama");
+        testeChama.setPassoAPasso("1. Prepare soluções dos sais metálicos\n2. Mergulhe o fio de cobre na solução\n3. Leve à chama do bico de Bunsen\n4. Observe a cor da chama\n5. Compare com a tabela de cores");
+        testeChama.setTempoEstimado(40);
+        testeChama.setSerie("9º ano");
+        testeChama.setDisciplina("Química");
+        testeChama.setNivelSeguranca(NivelSeguranca.ALTO);
+        testeChama.setEfeito(EfeitoVisual.FOGO);
+        testeChama.setReagentes(List.of(sulfatoCobre, fioCobre));
+
+        var oxirreducao = new Experimento();
+        oxirreducao.setNome("Oxidação do Ferro");
+        oxirreducao.setDescricao("Demonstrar reação de oxirredução com sulfato de cobre e ferro");
+        oxirreducao.setPassoAPasso("1. Prepare solução de sulfato de cobre\n2. Mergulhe o prego de ferro\n3. Aguarde 15 minutos\n4. Observe o depósito de cobre no prego\n5. Discuta a troca de elétrons");
+        oxirreducao.setTempoEstimado(35);
+        oxirreducao.setSerie("9º ano");
+        oxirreducao.setDisciplina("Química");
+        oxirreducao.setNivelSeguranca(NivelSeguranca.MEDIO);
+        oxirreducao.setEfeito(EfeitoVisual.COR);
+        oxirreducao.setReagentes(List.of(sulfatoCobre, ferro));
+
+        experimentoJpaRepo.saveAll(List.of(vulcao, indicador, testeChama, oxirreducao));
 
         atividadeRepo.saveAll(List.of(atv1, atv2));
 
