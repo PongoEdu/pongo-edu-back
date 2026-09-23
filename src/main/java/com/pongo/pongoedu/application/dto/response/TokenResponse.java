@@ -1,14 +1,12 @@
 package com.pongo.pongoedu.application.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class TokenResponse {
-    private String token;
-    private String tipo;
-    private Long expiresIn;
+public record TokenResponse(
+        String token,
+        String tipo,
+        long expiraEmMs,
+        UsuarioResponse usuario
+) {
+    public static TokenResponse de(String token, long expiraEmMs, UsuarioResponse usuario) {
+        return new TokenResponse(token, "Bearer", expiraEmMs, usuario);
+    }
 }

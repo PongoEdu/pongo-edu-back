@@ -1,13 +1,10 @@
 package com.pongo.pongoedu.application.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginRequest {
-    private String email;
-    private String senha;
+public record LoginRequest(
+        @NotBlank @Email String email,
+        @NotBlank String senha
+) {
 }
